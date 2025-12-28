@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "سَنَد - sanad",
     description: "دليل مجتمعي لخدمات الخير والمساعدة في سوريا",
-    url: "https://sanad.vercel.app",
+    url: "https://sanad-sy.vercel.app",
     siteName: "Sanad",
     images: [
       {
