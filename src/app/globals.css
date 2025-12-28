@@ -154,4 +154,7 @@
     @apply bg-background text-foreground font-cairo;
   }
 }
+.hide-scrollbar {
+ scrollbar-width: none;
+}
 /* Add a fallback font for better compatibility */

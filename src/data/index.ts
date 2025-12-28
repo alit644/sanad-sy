@@ -1,5 +1,8 @@
 import { Service } from "@/components/cards/ServiceCard";
 
+// Helper function to remove "all" option from arrays
+const removeFirstItem = <T,>(array: T[]): T[] => array.slice(1);
+
 // sy cities
 export const syCities = [
   { value: "all-cities", label: "جميع المدن" },
@@ -19,6 +22,8 @@ export const syCities = [
   { value: "hasakah", label: "الحسكة" },
 ];
 
+export const syCitiesWithoutAll = removeFirstItem(syCities);
+
 export const serviceTypes = [
   { value: "all-types", label: "جميع الخدمات" },
   { value: "pharmacy", label: "صيدلية" },
@@ -26,6 +31,8 @@ export const serviceTypes = [
   { value: "emergency", label: "طوارئ" },
   { value: "ngo", label: "منظمة" },
 ];
+
+export const serviceTypesWithoutAll = removeFirstItem(serviceTypes);
 
 export const serviceStatus = [
   { value: "all-status", label: "جميع الحالات" },

@@ -46,7 +46,7 @@ export const MSelect = ({
   ...props
 }: MSelectProps) => {
   return (
-    <Select name={name} dir="rtl" defaultValue={defaultValue} {...props}>
+    <Select  name={name} dir="rtl" defaultValue={defaultValue} {...props}>
       <SelectTrigger className={`w-fit ${className}`}>
         {icon && <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />}
         <SelectValue placeholder={placeholder} />

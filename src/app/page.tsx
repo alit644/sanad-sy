@@ -7,11 +7,11 @@ import EmptyState from "@/components/shared/EmptyState";
 
 export default function Home() {
   return (
-    <div className="min-h-screen  " dir="rtl">
+    <div className="min-h-screen" >
       <main>
         <GridBackgroundDemo />
         {/* Main Content + Filter-Bar */}
-        <section className=" container mx-auto my-8 ">
+        <section className=" container mx-auto my-8 px-4 md:px-0">
           <FilterBar />
           {/* Service cards will be rendered here */}
           {testServices.length > 0 ? (

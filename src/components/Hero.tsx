@@ -3,7 +3,7 @@ import { Input } from "./ui/input";
 
 const Hero = () => {
  return (
-   <section className="bg-linear-to-br from-via-white via-white to-primary/25 py-12 md:py-16 border-b border-border">
+   <section className="bg-linear-to-br from-via-white via-white to-primary/25 py-12 md:py-16 border-b border-border px-4 md:px-0">
       <div className="container">
         <div className="max-w-2xl  mx-auto text-center">
           <h1 className="animate-fade-up text-3xl md:text-4xl font-bold text-foreground mb-4">
