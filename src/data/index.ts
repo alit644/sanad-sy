@@ -1,0 +1,121 @@
+import { Service } from "@/components/cards/ServiceCard";
+
+// sy cities
+export const syCities = [
+  { value: "all-cities", label: "جميع المدن" },
+  { value: "damascus", label: "دمشق" },
+  { value: "damascus-countryside", label: "ريف دمشق" },
+  { value: "aleppo", label: "حلب" },
+  { value: "homs", label: "حمص" },
+  { value: "latakia", label: "اللاذقية" },
+  { value: "tartus", label: "طرطوس" },
+  { value: "hama", label: "حماة" },
+  { value: "deir-ez-zor", label: "دير الزور" },
+  { value: "raqqa", label: "الرقة" },
+  { value: "idlib", label: "إدلب" },
+  { value: "daraa", label: "درعا" },
+  { value: "quneitra", label: "القنيطرة" },
+  { value: "as-suwayda", label: "السويداء" },
+  { value: "hasakah", label: "الحسكة" },
+];
+
+export const serviceTypes = [
+  { value: "all-types", label: "جميع الخدمات" },
+  { value: "pharmacy", label: "صيدلية" },
+  { value: "hospital", label: "مستشفى" },
+  { value: "emergency", label: "طوارئ" },
+  { value: "ngo", label: "منظمة" },
+];
+
+export const serviceStatus = [
+  { value: "all-status", label: "جميع الحالات" },
+  { value: "verified", label: "مأكد" },
+  { value: "pending", label: "قيد المراجعة" },
+  { value: "closed", label: "مغلق" },
+];
+
+export const testServices: Service[] = [
+  {
+    id: "1",
+    name: "صيدلية النور",
+    type: "pharmacy",
+    city: "دمشق",
+    area: "المزة",
+    phone: "+963 11 123 4567",
+    verified: true,
+  },
+  {
+    id: "2",
+    name: "مشفى الأسد الجامعي",
+    type: "hospital",
+    city: "دمشق",
+    area: "المزة 86",
+    phone: "+963 11 234 5678",
+    address: "شارع المزة الرئيسي",
+    verified: true,
+  },
+  {
+    id: "3",
+    name: "الهلال الأحمر السوري",
+    type: "ngo",
+    city: "حلب",
+    area: "الميدان",
+    phone: "+963 21 345 6789",
+    verified: true,
+  },
+  {
+    id: "4",
+    name: "صيدلية الشفاء",
+    type: "pharmacy",
+    city: "حمص",
+    area: "الوعر",
+    phone: "+963 31 456 7890",
+    verified: false,
+  },
+  {
+    id: "52",
+    name: "مشفى تشرين العسكري",
+    type: "hospital",
+    city: "اللاذقية",
+    area: "المركز",
+    phone: "+963 41 567 8901",
+    verified: true,
+  },
+  {
+    id: "5",
+    name: "مشفى تشرين العسكري",
+    type: "emergency",
+    city: "اللاذقية",
+    area: "المركز",
+    phone: "+963 41 567 8901",
+    verified: true,
+  },
+  {
+    id: "6",
+    name: "منظمة إغاثة سوريا",
+    type: "ngo",
+    city: "دمشق",
+    area: "كفرسوسة",
+    phone: "+963 11 678 9012",
+    verified: false,
+  },
+  {
+    id: "7",
+    name: "صيدلية الأمل",
+    type: "pharmacy",
+    city: "حماة",
+    area: "العصي",
+    phone: "+963 33 789 0123",
+    verified: true,
+  },
+  {
+    id: "8",
+    name: "مشفى المواساة",
+    type: "hospital",
+    city: "دمشق",
+    area: "المزة",
+    phone: "+963 11 890 1234",
+    address: "شارع فارس الخوري",
+    verified: true,
+  },
+];
