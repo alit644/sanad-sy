@@ -2,6 +2,7 @@ import { CheckCircle2, ChevronLeft, Clock, MapPin, Phone } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+import Link from "next/link";
 export interface Service {
   id: string;
   name: string;
@@ -39,12 +40,18 @@ const ServiceCard = ({
   phone,
 }: Service) => {
   return (
-    <Card id={id} className="transition-all duration-300 ease-in-out hover:shadow-lg hover:scale-[1.01] hover:border-primary/20">
+    <Card
+      id={id}
+      className="transition-all duration-300 ease-in-out hover:shadow-lg hover:scale-[1.01] hover:border-primary/20"
+    >
       <CardContent>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <Badge variant={typeBadgeVariants[type]} title={typeBadgeVariants[type]} >
+              <Badge
+                variant={typeBadgeVariants[type]}
+                title={typeBadgeVariants[type]}
+              >
                 {typeLabels[type]}
               </Badge>
               <Badge variant={verified ? "verified" : "pending"}>
@@ -89,13 +96,15 @@ const ServiceCard = ({
         </div>
 
         <div className="mt-4 pt-4 border-t border-border">
-          <Button
-            variant="ghost"
-            className="w-full justify-between text-muted-foreground hover:text-foreground"
-          >
-            <span>عرض التفاصيل</span>
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
+          <Link href={`/services-details/${id}`}>
+            <Button
+              variant="ghost"
+              className="w-full justify-between text-muted-foreground hover:text-foreground"
+            >
+              <span>عرض التفاصيل</span>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>

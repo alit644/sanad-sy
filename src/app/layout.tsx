@@ -3,14 +3,14 @@ import { Cairo } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
+import { Toaster } from "@/components/ui/sonner";
 
 const cairo = Cairo({
- variable:"--font-cairo",
- subsets:["arabic"],
- weight: ["400", "500", "600", "700"],
+  variable: "--font-cairo",
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
-})
+});
 
 export const metadata: Metadata = {
   title: "سَنَد - sanad",
@@ -24,11 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ar" dir="rtl">
-      <body
-        className={` ${cairo.variable} antialiased bg-background`}
-      >
-       <Header />
-        {children}
+      <body className={` ${cairo.variable} antialiased bg-background`}>
+        <Header />
+        <main className="min-h-screen">{children}</main>
+        <Toaster />
         <Footer />
       </body>
     </html>

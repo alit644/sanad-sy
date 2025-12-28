@@ -19,7 +19,8 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
-        outline_destructive: "border border-destructive text-destructive bg-background hover:bg-accent",
+        error_outline: "border border-[var(--error)] bg-[var(--error)]/30 text-[var(--error-foreground)] hover:bg-[var(--error)]/40",
+        verified: "border border-[var(--verified)] bg-[var(--verified)]/30 text-[var(--verified-foreground)] hover:bg-[var(--verified)]/40",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

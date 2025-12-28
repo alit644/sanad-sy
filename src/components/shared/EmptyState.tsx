@@ -21,7 +21,7 @@ const EmptyState = () => {
       <div className="flex flex-col sm:flex-row gap-3">
         <Button variant="outline">مسح الفلاتر</Button>
         <Button asChild aria-label=" إضافة خدمة جديدة">
-          <Link href={'/'}>
+          <Link href={'/add-services'}>
             <Plus className="h-4 w-4 mr-2" />
             إضافة خدمة جديدة
           </Link>
