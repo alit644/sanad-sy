@@ -39,10 +39,3 @@ export default function Home() {
     </div>
   );
 }
-// components
-// -cards
-// -features
-// -admain
-// -services
-// -shared
-// -ui

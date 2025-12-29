@@ -1,0 +1,106 @@
+generator client {
+ provider = "prisma-client-ts"
+ output   = "../src/generated/prisma"
+}
+
+datasource db {
+ provider = "postgresql"
+}
+
+model Place {
+ id                 String       @id @default(cuid())
+ title              String
+ type               PlaceType
+ city               String
+ area               String?
+ phone              String?
+ addressText        String?
+ hours              String?
+ description        String
+ status             PlaceStatus? @default(PENDING)
+ // cached trust values
+ scoreCached        Int          @default(0)
+ confirmCountCached Int          @default(0)
+ reportCountCached  Int          @default(0)
+
+ // timestamps
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+
+ // relationships
+ confirmations   Confirmation[]
+ reports         Report[]
+ editSuggestions EditSuggestion[]
+
+ @@index([city, type])
+ @@index([status])
+ @@map("places")
+}
+
+model Confirmation {
+ id        String   @id @default(cuid())
+ placeId   String
+ sanadId   String
+ place     Place    @relation(fields: [placeId], references: [id], onDelete: Cascade)
+ createdAt DateTime @default(now())
+
+ @@unique([placeId, sanadId])
+ @@index([placeId])
+}
+
+model Report {
+ id        String       @id @default(cuid())
+ placeId   String
+ sanadId   String
+ notes     String?
+ reason    ReportReason
+ status    ReviewStatus @default(PENDING)
+ place     Place        @relation(fields: [placeId], references: [id], onDelete: Cascade)
+ createdAt DateTime     @default(now())
+
+ @@unique([placeId, sanadId])
+ @@index([placeId])
+ @@index([status])
+}
+
+model EditSuggestion {
+ id        String       @id @default(cuid())
+ placeId   String
+ sanadId   String
+ payload   Json
+ status    ReviewStatus @default(PENDING)
+ createdAt DateTime     @default(now())
+ place     Place        @relation(fields: [placeId], references: [id], onDelete: Cascade)
+
+ @@index([placeId])
+ @@index([status])
+}
+
+enum PlaceType {
+ HOSPITAL
+ EDUCATION
+ PHARMACY
+ NGO
+ EMERGENCY
+ OTHER
+}
+
+enum PlaceStatus {
+ PENDING
+ VERIFIED
+ ARCHIVED
+}
+
+enum ReviewStatus {
+ PENDING
+ ACCEPTED
+ REJECTED
+}
+
+enum ReportReason {
+ WRONG_PHONE
+ CLOSED
+ NOT_FOUND
+ SPAM
+ OTHER
+}
