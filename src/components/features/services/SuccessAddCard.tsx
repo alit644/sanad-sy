@@ -38,8 +38,8 @@ const SuccessAddCard = () => {
 
       {/* Inspirational quote */}
       <p className="text-muted-foreground italic mb-8">
-        &quot;من سهّل على مؤمن كربة من كرب الدنيا، سهّل الله عليه كربة من كرب
-        يوم القيامة&quot;
+      
+        &quot;مَن نفَّس عن مؤمنٍ كربةً من كرب الدنيا، نفَّس الله عنه كربةً من كرب يوم القيامة&quot;
       </p>
 
       {/* Action button */}

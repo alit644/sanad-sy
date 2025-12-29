@@ -19,7 +19,7 @@ const Page = () => {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto flex items-center justify-center gap-2">
+            <p className="text-lg text-center mb-2 md:text-xl text-muted-foreground max-w-2xl mx-auto flex items-center justify-center gap-2">
               <Sparkles className="w-5 h-5 text-primary/70" />
               كل مساهمة تصنع فرقاً في حياة أحدهم
               <Sparkles className="w-5 h-5 text-primary/70" />
