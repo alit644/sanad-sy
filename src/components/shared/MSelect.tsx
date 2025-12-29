@@ -8,17 +8,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MapPin } from "lucide-react";
-import { ReactNode } from "react";
+import { SelectOption } from "@/utils/types";
 
-interface MSelectProps {
-  name: string;
-}
-
-export interface SelectOption {
-  value: string;
-  label: string;
-  disabled?: boolean;
-}
 
 interface MSelectProps extends React.ComponentProps<typeof Select> {
   name: string;
@@ -36,19 +27,19 @@ export const MSelect = ({
   name,
   options,
   icon = false,
-  placeholder = "Select an option",
+  placeholder = "اختر خياراً",
   label = options[0]?.label || "",
   defaultValue = options[0]?.value || "",
   className = "",
 
-  // disabled = false,
+  disabled = false,
   // required = false,
   ...props
 }: MSelectProps) => {
   return (
-    <Select  name={name} dir="rtl" defaultValue={defaultValue} {...props}>
+    <Select name={name} dir="rtl" defaultValue={defaultValue} disabled={disabled} {...props}>
       <SelectTrigger className={`w-fit ${className}`}>
-        {icon && <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />}
+        {icon && <MapPin className="w-4 h-4 ml-2 text-muted-foreground" />}{" "}
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

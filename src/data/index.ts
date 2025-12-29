@@ -24,15 +24,6 @@ export const syCities = [
 
 export const syCitiesWithoutAll = removeFirstItem(syCities);
 
-export const serviceTypes = [
-  { value: "all-types", label: "جميع الخدمات" },
-  { value: "pharmacy", label: "صيدلية" },
-  { value: "hospital", label: "مستشفى" },
-  { value: "emergency", label: "طوارئ" },
-  { value: "ngo", label: "منظمة" },
-];
-
-export const serviceTypesWithoutAll = removeFirstItem(serviceTypes);
 
 export const serviceStatus = [
   { value: "all-status", label: "جميع الحالات" },

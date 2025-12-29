@@ -31,6 +31,9 @@ export const addServiceSchema = z.object({
     .max(250, "وصف الخدمة يجب أن يكون على الأكثر 250 أحرف")
     ,
   category: z.string({ error: "يجب أن تحدد نوع الخدمة" }),
+  // category: z.enum(Object.values(PlaceType), {
+  //   error: "يجب أن تحدد نوع الخدمة",
+  // }),
   city: z.string({ error: "يجب أن تحدد المدينة" }),
 });
 

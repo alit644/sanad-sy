@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { MSelect } from "@/components/shared/MSelect";
@@ -5,14 +6,17 @@ import { Button } from "@/components/ui/button";
 import { FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { serviceTypesWithoutAll, syCitiesWithoutAll } from "@/data";
-import { Send } from "lucide-react";
+import { syCitiesWithoutAll } from "@/data";
+import { Loader2, Send } from "lucide-react";
 import { Activity, useState } from "react";
 import { useForm } from "react-hook-form";
 import SuccessAddCard from "./SuccessAddCard";
 import RHFField from "@/components/shared/RHFField";
 import { addServiceSchema, AddServiceSchema } from "@/utils/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { placeTypeOptionsWithoutAll } from "@/lib/constants";
+import { addServiceAction } from "@/actions/servicesAction";
+import { notify } from "@/utils/notify";
 
 const AddServicesForm = () => {
   const form = useForm<AddServiceSchema>({
@@ -20,7 +24,7 @@ const AddServicesForm = () => {
     defaultValues: {
       title: "",
       description: "",
-      category: "pharmacy",
+      category: "HOSPITAL",
       city: "damascus",
       district: "",
       phone: "",
@@ -31,19 +35,29 @@ const AddServicesForm = () => {
   // onSubmit handler
   const onSubmit = async (data: AddServiceSchema) => {
     try {
-      console.log(data);
-      await new Promise((r) => setTimeout(r, 800));
-      setIsSubmitted(true);
-    } catch (e) {
+      const result = await addServiceAction(data);
+      if (result.success) {
+        notify(result.message, "success");
+        form.reset();
+        setIsSubmitted(true);
+      } else {
+        notify(result.message, "error");
+      }
+    } catch (error: any) {
       // handle error
-      console.log(e);
+      console.error("Error in onSubmit:", error?.message || error);
     }
   };
   return (
     <div>
-    
       <Activity mode={isSubmitted ? "hidden" : "visible"}>
-        <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          id="form-rhf-demo"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className={
+            form.formState.isSubmitting ? "opacity-80 pointer-events-none relative" : ""
+          }
+        >
           <FieldGroup>
             {/* Title */}
 
@@ -57,6 +71,7 @@ const AddServicesForm = () => {
                   {...field}
                   type="text"
                   id="title"
+                  disabled={form.formState.isSubmitting}
                   aria-invalid={fieldState.invalid}
                   placeholder="مثال: عيادة طبية مجانية"
                   autoComplete="off"
@@ -73,6 +88,7 @@ const AddServicesForm = () => {
                   <MSelect
                     name="city"
                     value={field.value}
+                    disabled={form.formState.isSubmitting}
                     onValueChange={field.onChange}
                     placeholder="اختر المدينة"
                     options={syCitiesWithoutAll}
@@ -89,6 +105,7 @@ const AddServicesForm = () => {
                     {...field}
                     type="text"
                     id="district"
+                    disabled={form.formState.isSubmitting}
                     aria-invalid={fieldState.invalid}
                     placeholder="مثال: شارع بغداد، بناء 12"
                     autoComplete="address-level2"
@@ -106,9 +123,9 @@ const AddServicesForm = () => {
                   name="category"
                   value={field.value}
                   onValueChange={field.onChange}
+                  disabled={form.formState.isSubmitting}
                   placeholder="اختر الفئة"
-                  options={serviceTypesWithoutAll}
-                  icon={true}
+                  options={placeTypeOptionsWithoutAll}
                 />
               )}
             />
@@ -123,6 +140,7 @@ const AddServicesForm = () => {
                     {...field}
                     type="tel"
                     id="phone"
+                    disabled={form.formState.isSubmitting}
                     aria-invalid={fieldState.invalid}
                     placeholder="09XXXXXXXX"
                     autoComplete="tel"
@@ -138,6 +156,7 @@ const AddServicesForm = () => {
                     {...field}
                     type="text"
                     id="hours"
+                    disabled={form.formState.isSubmitting}
                     aria-invalid={fieldState.invalid}
                     placeholder="مثال: 9 صباحاً - 5 مساءً"
                     autoComplete="off"
@@ -156,6 +175,7 @@ const AddServicesForm = () => {
                   id="description"
                   placeholder="وصف مختصر للخدمة..."
                   rows={6}
+                  disabled={form.formState.isSubmitting}
                   className="min-h-24 resize-none"
                   aria-invalid={fieldState.invalid}
                   autoComplete="off"
@@ -176,13 +196,19 @@ const AddServicesForm = () => {
             >
               <span className="flex items-center gap-2">
                 <Send className="w-5 h-5 group-hover:translate-x-1 transition-all" />
-                {form.formState.isSubmitting
-                  ? "جاري الإرسال..."
-                  : "إرسال الخدمة"}
+                {form.formState.isSubmitting ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    إرسال...
+                  </span>
+                ) : (
+                  "إرسال الخدمة"
+                )}
               </span>
             </Button>
           </div>
         </form>
+       
       </Activity>
 
       <Activity mode={!isSubmitted ? "hidden" : "visible"}>
