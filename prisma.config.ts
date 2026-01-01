@@ -7,7 +7,9 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: env("DATABASE_URL"),
+    url: env("DIRECT_URL"),
   },
 });
 
+//TODO : Add database connection pooling configuration
+//TODO : عرض كارت الخدمة في صفحة العرض
