@@ -155,6 +155,9 @@
   }
 }
 .hide-scrollbar {
- scrollbar-width: none;
+  scrollbar-width: none;
 }
-/* Add a fallback font for better compatibility */
+
+::selection {
+  @apply bg-primary text-primary-foreground;
+}

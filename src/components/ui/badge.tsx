@@ -22,14 +22,16 @@ const badgeVariants = cva(
           "border-[var(--pending)] bg-[var(--pending)]/30 text-[var(--pending-foreground)] [a&]:hover:bg-[var(--pending)]/90",
         warning:
           "border-[var(--warning)] bg-[var(--warning)]/30 text-[var(--warning-foreground)] [a&]:hover:bg-[var(--warning)]/90",
-        pharmacy:
+        PHARMACY:
           "border-[var(--pharmacy)]  text-[var(--pharmacy-foreground)] [a&]:hover:bg-[var(--pharmacy)]/90",
-        hospital:
+        HOSPITAL:
           "border-[var(--hospital)] text-[var(--hospital-foreground)] [a&]:hover:bg-[var(--hospital)]/90",
-        ngo:
+        NGO:
           "border-[var(--ngo)] text-[var(--ngo-foreground)] [a&]:hover:bg-[var(--ngo)]/90",
-        emergency:
-          "border-[var(--emergency)] text-[var(--emergency-foreground)] [a&]:hover:bg-[var(--emergency)]/90",
+        EDUCATION:
+          "border-[var(--education)] text-[var(--education-foreground)] [a&]:hover:bg-[var(--education)]/90",
+        OTHER:
+          "border-[var(--other)] text-[var(--other-foreground)] [a&]:hover:bg-[var(--other)]/90",
       },
     },
     defaultVariants: {

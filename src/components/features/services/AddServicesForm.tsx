@@ -37,11 +37,11 @@ const AddServicesForm = () => {
     try {
       const result = await addServiceAction(data);
       if (result.success) {
-        notify(result.message, "success");
+        notify(result.message || "تم إضافة الخدمة بنجاح!", "success");
         form.reset();
         setIsSubmitted(true);
       } else {
-        notify(result.message, "error");
+        notify(result.message || "حدث خطأ أثناء إضافة الخدمة، يرجى المحاولة لاحقاً", "error");
       }
     } catch (error: any) {
       // handle error

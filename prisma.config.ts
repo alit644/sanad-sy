@@ -11,5 +11,3 @@ export default defineConfig({
   },
 });
 
-//TODO : Add database connection pooling configuration
-//TODO : عرض كارت الخدمة في صفحة العرض

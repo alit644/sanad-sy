@@ -21,7 +21,7 @@ const ServiceHeader = () => {
     <div className="p-4 md:p-8 animate-fade-up">
       {/* Category & Freshness Row */}
       <div className="flex flex-wrap items-center gap-3 mb-4">
-        <Badge variant="pharmacy"> صيدلية</Badge>
+        <Badge variant="PHARMACY"> صيدلية</Badge>
         <Badge variant="verified">محدث حديثاً</Badge>
       </div>
 

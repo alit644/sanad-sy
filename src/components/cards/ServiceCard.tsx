@@ -3,41 +3,39 @@ import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
-export interface Service {
-  id: string;
-  name: string;
-  type: "pharmacy" | "hospital" | "ngo" | "emergency";
-  city: string;
-  area?: string;
-  phone?: string;
-  address?: string;
-  verified: boolean;
-}
+import { PlaceStatus, PlaceType } from "@/generated/prisma/enums";
+import { Service } from "@/utils/types";
+
 const typeLabels: Record<Service["type"], string> = {
-  pharmacy: "صيدلية",
-  hospital: "مشفى",
-  ngo: "منظمة",
-  emergency: "طوارئ",
+  [PlaceType.PHARMACY]: "صيدلية",
+  [PlaceType.HOSPITAL]: "مشفى",
+  [PlaceType.NGO]: "منظمة",
+  [PlaceType.EMERGENCY]: "طوارئ",
+  [PlaceType.EDUCATION]: "تعليم",
+  [PlaceType.OTHER]: "آخر",
 };
 const typeBadgeVariants: Record<
   Service["type"],
-  "pharmacy" | "hospital" | "ngo" | "emergency"
+  "PHARMACY" | "HOSPITAL" | "NGO" | "destructive" | "EDUCATION" | "OTHER"
 > = {
-  pharmacy: "pharmacy",
-  hospital: "hospital",
-  ngo: "ngo",
-  emergency: "emergency",
+  [PlaceType.PHARMACY]: "PHARMACY",
+  [PlaceType.HOSPITAL]: "HOSPITAL",
+  [PlaceType.NGO]: "NGO",
+  [PlaceType.EMERGENCY]: "destructive",
+  [PlaceType.EDUCATION]: "EDUCATION",
+  [PlaceType.OTHER]: "OTHER",
 };
 
 const ServiceCard = ({
   id,
-  name,
+  title,
   city,
   type,
-  verified,
   area,
-  address,
+  status,
   phone,
+  hours,
+  addressText,
 }: Service) => {
   return (
     <Card
@@ -54,8 +52,12 @@ const ServiceCard = ({
               >
                 {typeLabels[type]}
               </Badge>
-              <Badge variant={verified ? "verified" : "pending"}>
-                {verified ? (
+              <Badge
+                variant={
+                  status === PlaceStatus.VERIFIED ? "verified" : "pending"
+                }
+              >
+                {status === PlaceStatus.VERIFIED ? (
                   <>
                     <CheckCircle2 className="h-3 w-3" />
                     <span>موثق</span>
@@ -70,13 +72,13 @@ const ServiceCard = ({
             </div>
 
             <h3 className="font-semibold text-foreground text-base mb-2 truncate">
-              {name}
+              {title}
             </h3>
 
             <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
               <MapPin className="h-3.5 w-3.5 shrink-0" />
               <span className="truncate">
-                {city} - {area}
+                {city} {area ? `- ${area}` : ""}
               </span>
             </div>
           </div>
@@ -84,12 +86,16 @@ const ServiceCard = ({
           <div className="flex flex-col gap-2 shrink-0">
             {phone && (
               <Button
+                asChild
                 variant="default"
                 size="icon"
                 className="rounded-full"
+                title="اتصال"
                 aria-label="اتصال"
               >
-                <Phone className="h-4 w-4" />
+                <a href={`tel:${phone}`} aria-label="اتصال">
+                  <Phone className="h-4 w-4" />
+                </a>
               </Button>
             )}
           </div>
@@ -98,6 +104,8 @@ const ServiceCard = ({
         <div className="mt-4 pt-4 border-t border-border">
           <Link href={`/services-details/${id}`}>
             <Button
+            title="عرض التفاصيل"
+            aria-label="عرض التفاصيل"
               variant="ghost"
               className="w-full justify-between text-muted-foreground hover:text-foreground"
             >

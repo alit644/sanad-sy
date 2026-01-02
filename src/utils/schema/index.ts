@@ -21,9 +21,9 @@ export const addServiceSchema = z.object({
   hours: z
     .string()
     .trim()
-    .min(2, "مثال: 9 صباحاً - 5 مساءً")
     .max(20, "عدد الساعات يجب أن يكون على الأكثر 20 أحرف")
-    .optional(),
+    .optional()
+    .or(z.literal("")),
   description: z
     .string({ error: "من فضلك قم بكتابة وصف للخدمة" })
     .trim()

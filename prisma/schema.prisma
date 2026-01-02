@@ -17,7 +17,7 @@ model Place {
   addressText        String?
   hours              String?
   description        String
-  status             PlaceStatus?     @default(PENDING)
+  status             PlaceStatus     @default(PENDING)
   scoreCached        Int              @default(0)
   confirmCountCached Int              @default(0)
   reportCountCached  Int              @default(0)
