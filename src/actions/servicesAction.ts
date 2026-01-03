@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
+import { Place } from "@/generated/prisma/browser";
 import { ok, fail, ApiResponse } from "@/lib/api-response";
 import prisma from "@/utils/db";
 import { addServiceSchema, AddServiceSchema } from "@/utils/schema";
-import { Service } from "@/utils/types";
+import { Service, ServiceById } from "@/utils/types";
 import { revalidatePath, } from "next/cache";
 
 //! Add service action for server-side processing
@@ -68,5 +69,38 @@ export const getAllServicesAction = async (): Promise<
   } catch (error: any) {
     console.error("Error in getAllServicesAction:", error);
     return fail("حدث خطأ أثناء جلب جميع الخدمات، يرجى المحاولة لاحقاً");
+  }
+};
+// ! Get service by id action for server-side processing
+export const getServiceByIdAction = async (
+  id: string
+): Promise<ApiResponse<ServiceById>> => {
+  try {
+    const service = await prisma.place.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        title: true,
+        area: true,
+        addressText: true,
+        phone: true,
+        hours: true,
+        city: true,
+        status: true,
+        type: true,
+        description: true,
+        confirmCountCached: true,
+        scoreCached: true,
+      },
+    });
+    if (!service) {
+      return fail("الخدمة غير موجودة!");
+    }
+    return ok(service as ServiceById, "تم جلب الخدمة بنجاح!");
+  } catch (error: any) {
+    console.error("Error in getServiceByIdAction:", error);
+    return fail("حدث خطأ أثناء جلب الخدمة، يرجى المحاولة لاحقاً");
   }
 };

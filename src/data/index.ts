@@ -1,5 +1,3 @@
-import { Service } from "@/utils/types";
-
 // Helper function to remove "all" option from arrays
 const removeFirstItem = <T,>(array: T[]): T[] => array.slice(1);
 
@@ -23,12 +21,3 @@ export const syCities = [
 ];
 
 export const syCitiesWithoutAll = removeFirstItem(syCities);
-
-
-export const serviceStatus = [
-  { value: "all-status", label: "جميع الحالات" },
-  { value: "verified", label: "مأكد" },
-  { value: "pending", label: "قيد المراجعة" },
-  { value: "closed", label: "مغلق" },
-];
-

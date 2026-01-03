@@ -3,28 +3,15 @@ import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
-import { PlaceStatus, PlaceType } from "@/generated/prisma/enums";
+import { PlaceStatus } from "@/generated/prisma/enums";
 import { Service } from "@/utils/types";
-
-const typeLabels: Record<Service["type"], string> = {
-  [PlaceType.PHARMACY]: "صيدلية",
-  [PlaceType.HOSPITAL]: "مشفى",
-  [PlaceType.NGO]: "منظمة",
-  [PlaceType.EMERGENCY]: "طوارئ",
-  [PlaceType.EDUCATION]: "تعليم",
-  [PlaceType.OTHER]: "آخر",
-};
-const typeBadgeVariants: Record<
-  Service["type"],
-  "PHARMACY" | "HOSPITAL" | "NGO" | "destructive" | "EDUCATION" | "OTHER"
-> = {
-  [PlaceType.PHARMACY]: "PHARMACY",
-  [PlaceType.HOSPITAL]: "HOSPITAL",
-  [PlaceType.NGO]: "NGO",
-  [PlaceType.EMERGENCY]: "destructive",
-  [PlaceType.EDUCATION]: "EDUCATION",
-  [PlaceType.OTHER]: "OTHER",
-};
+import {
+  getCityLabel,
+  getPlaceStatusBadge,
+  getPlaceStatusLabel,
+  getPlaceTypeBadge,
+  getPlaceTypeLabel,
+} from "@/lib/place.config";
 
 const ServiceCard = ({
   id,
@@ -34,8 +21,6 @@ const ServiceCard = ({
   area,
   status,
   phone,
-  hours,
-  addressText,
 }: Service) => {
   return (
     <Card
@@ -47,27 +32,13 @@ const ServiceCard = ({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <Badge
-                variant={typeBadgeVariants[type]}
-                title={typeBadgeVariants[type]}
+                variant={getPlaceTypeBadge(type)}
+                title={getPlaceTypeLabel(type)}
               >
-                {typeLabels[type]}
+                {getPlaceTypeLabel(type)}
               </Badge>
-              <Badge
-                variant={
-                  status === PlaceStatus.VERIFIED ? "verified" : "pending"
-                }
-              >
-                {status === PlaceStatus.VERIFIED ? (
-                  <>
-                    <CheckCircle2 className="h-3 w-3" />
-                    <span>موثق</span>
-                  </>
-                ) : (
-                  <>
-                    <Clock className="h-3 w-3" />
-                    <span>قيد المراجعة</span>
-                  </>
-                )}
+              <Badge variant={getPlaceStatusBadge(status)}>
+                {getPlaceStatusLabel(status)}
               </Badge>
             </div>
 
@@ -78,7 +49,7 @@ const ServiceCard = ({
             <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
               <MapPin className="h-3.5 w-3.5 shrink-0" />
               <span className="truncate">
-                {city} {area ? `- ${area}` : ""}
+                {getCityLabel(city)} {area ? `- ${area}` : ""}
               </span>
             </div>
           </div>
@@ -104,8 +75,8 @@ const ServiceCard = ({
         <div className="mt-4 pt-4 border-t border-border">
           <Link href={`/services-details/${id}`}>
             <Button
-            title="عرض التفاصيل"
-            aria-label="عرض التفاصيل"
+              title="عرض التفاصيل"
+              aria-label="عرض التفاصيل"
               variant="ghost"
               className="w-full justify-between text-muted-foreground hover:text-foreground"
             >

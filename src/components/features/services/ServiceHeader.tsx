@@ -1,15 +1,26 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  getCityLabel,
+  getPlaceStatusBadge,
+  getPlaceStatusLabel,
+  getPlaceTypeBadge,
+  getPlaceTypeLabel,
+} from "@/lib/place.config";
 import { notify } from "@/utils/notify";
+import { ServiceById } from "@/utils/types";
 import { Check, Clock, Copy, FileText, MapPin, Phone } from "lucide-react";
 import { useState } from "react";
 
-const ServiceHeader = () => {
+interface ServiceHeaderProps {
+  service: ServiceById;
+}
+const ServiceHeader = ({ service }: ServiceHeaderProps) => {
   const [copied, setCopied] = useState<boolean>(false);
   //! handle Copy Phone
   const handleCopyPhone = () => {
-    navigator.clipboard.writeText("+963 999 999 999");
+    navigator.clipboard.writeText(service.phone || "");
     setCopied(true);
     notify("تم نسخ رقم الهاتف", "success");
     setTimeout(() => {
@@ -21,19 +32,24 @@ const ServiceHeader = () => {
     <div className="p-4 md:p-8 animate-fade-up">
       {/* Category & Freshness Row */}
       <div className="flex flex-wrap items-center gap-3 mb-4">
-        <Badge variant="PHARMACY"> صيدلية</Badge>
-        <Badge variant="verified">محدث حديثاً</Badge>
+        <Badge variant={getPlaceTypeBadge(service.type)}>
+          {getPlaceTypeLabel(service.type)}
+        </Badge>
+        <Badge variant={getPlaceStatusBadge(service.status)}>
+          {getPlaceStatusLabel(service.status)}
+        </Badge>
       </div>
 
       {/* Service Name */}
       <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-relaxed">
-        صيدلية الأمل - خدمات طبية متكاملة
+        {service.title}
       </h1>
-
       {/* Location */}
       <div className="flex items-center gap-2 text-muted-foreground mb-6 ">
         <MapPin className="w-5 h-5 text-primary" />
-        <span className="text-lg">دمشق • المزة</span>
+        <span className="text-lg">
+          {service.area} • {getCityLabel(service.city)}
+        </span>
       </div>
 
       {/* Phone */}
@@ -49,7 +65,7 @@ const ServiceHeader = () => {
             className="text-xl font-semibold text-foreground tracking-wide"
             dir="ltr"
           >
-            +963 999 999 999
+            {service.phone}
           </p>
           <Button
             variant="ghost"
@@ -73,9 +89,7 @@ const ServiceHeader = () => {
         </h3>
 
         <p className="text-muted-foreground leading-relaxed mb-4">
-          صيدلية الأمل تقدم خدمات صيدلانية شاملة للمجتمع منذ عام 2010. نوفر
-          مجموعة واسعة من الأدوية والمستلزمات الطبية بأسعار معقولة. فريقنا من
-          الصيادلة المؤهلين جاهز لتقديم الاستشارات الطبية المجانية.
+          {service.description}
         </p>
       </div>
 

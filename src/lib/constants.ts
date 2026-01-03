@@ -33,6 +33,7 @@ const translatePlaceStatus = (status: string): string => {
   }
 };
 
+
 const placeTypeOptions: SelectOption[] = [
   { value: "all-types", label: "جميع الخدمات" }, // الخيار الخاص بالفلترة
   ...Object.values(PlaceType).map((type) => ({
