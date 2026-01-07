@@ -17,8 +17,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { placeTypeOptionsWithoutAll } from "@/lib/constants";
 import { addServiceAction } from "@/actions/servicesAction";
 import { notify } from "@/utils/notify";
+import { useFingerprint } from "@/components/FingerprintProvider";
 
 const AddServicesForm = () => {
+    const visitorId = useFingerprint();
+// 29bb0ac8a66cb074bc09dd0297539901
   const form = useForm<AddServiceSchema>({
     resolver: zodResolver(addServiceSchema),
     defaultValues: {
@@ -208,6 +211,7 @@ const AddServicesForm = () => {
               </span>
             </Button>
           </div>
+          {visitorId}
         </form>
        
       </Activity>

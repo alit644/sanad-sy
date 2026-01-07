@@ -1,4 +1,4 @@
-import { getServiceByIdAction } from "@/actions/servicesAction";
+import { confirmServiceAction, getServiceByIdAction } from "@/actions/servicesAction";
 import ActionButtons from "@/components/features/services/ActionButtons";
 import ServiceHeader from "@/components/features/services/ServiceHeader";
 import TrustScore from "@/components/features/services/TrustScore";
@@ -12,6 +12,7 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
+
   const { id } = await params;
   const result = await getServiceByIdAction(id);
   if (!result.success) return { title: "Service Not Found" };
@@ -23,9 +24,10 @@ export async function generateMetadata({
 
 const Page = async ({ params }: PageProps) => {
   const { id } = await params;
+  const ip = await confirmServiceAction();
+  console.log(ip)
   const result = await getServiceByIdAction(id);
   if (!result.success) return <ErrorState message={result.message} />;
-
   return (
     <main className="container mx-auto px-4 py-8 md:py-12 max-w-4xl">
       {/* Back Button */}
@@ -38,11 +40,17 @@ const Page = async ({ params }: PageProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           {/* Trust Score - مؤشر الثقة */}
           <Card className="py-0">
-            <TrustScore />
+            <TrustScore
+              confirmCountCached={result.data.confirmCountCached}
+              trustScore={result.data.scoreCached}
+            />
           </Card>
           {/* Action Buttons */}
           <Card className="py-0">
-            <ActionButtons />
+            <ActionButtons
+              title={result.data.title}
+              description={result.data.description}
+            />
           </Card>
           {/* TODO: اضافة اخر تحديثات + خريطة الموقع */}
         </div>

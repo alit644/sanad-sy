@@ -69,6 +69,8 @@ const ServiceHeader = ({ service }: ServiceHeaderProps) => {
           </p>
           <Button
             variant="ghost"
+            title="نسخ رقم الهاتف"
+            aria-label="نسخ رقم الهاتف"
             size="icon"
             onClick={handleCopyPhone}
             className="shrink-0"

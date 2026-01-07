@@ -1,7 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { ShieldCheck, TrendingUp } from "lucide-react";
-
-const TrustScore = () => {
+interface ITrustScore {
+  confirmCountCached:number,
+  trustScore:number,
+}
+const TrustScore = ({ confirmCountCached,trustScore }: ITrustScore) => {
   return (
     <div className="p-4 md:p-8 animate-fade-up">
       <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
@@ -18,11 +21,11 @@ const TrustScore = () => {
           <div className="h-3 bg-muted rounded-full overflow-hidden">
             <div
               className={`h-full ${"bg-[#2EB88A]"} rounded-full transition-all duration-1000 ease-out`}
-              style={{ width: `${79}%` }}
+              style={{ width: `${trustScore}%` }}
             />
           </div>
           <div className="flex justify-between mt-1">
-            <span className="text-2xl font-bold text-foreground">79</span>
+            <span className="text-2xl font-bold text-foreground">{trustScore}</span>
             <span className="text-sm text-muted-foreground self-end">/100</span>
           </div>
         </div>
@@ -34,7 +37,7 @@ const TrustScore = () => {
               تأكيدات المجتمع
             </span>
           </div>
-          <span className="text-lg font-semibold text-foreground">118</span>
+          <span className="text-lg font-semibold text-foreground">{confirmCountCached}</span>
         </div>
 
         {/* AI Review Badge  */}

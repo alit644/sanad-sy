@@ -5,7 +5,8 @@ import { ok, fail, ApiResponse } from "@/lib/api-response";
 import prisma from "@/utils/db";
 import { addServiceSchema, AddServiceSchema } from "@/utils/schema";
 import { Service, ServiceById } from "@/utils/types";
-import { revalidatePath, } from "next/cache";
+import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 
 //! Add service action for server-side processing
 export const addServiceAction = async (
@@ -103,4 +104,15 @@ export const getServiceByIdAction = async (
     console.error("Error in getServiceByIdAction:", error);
     return fail("حدث خطأ أثناء جلب الخدمة، يرجى المحاولة لاحقاً");
   }
+};
+
+//! Get Clinet IP
+export const confirmServiceAction = async () => {
+  const headersList = await headers();
+  const forwarded = headersList.get("x-forwarded-for");
+  if (forwarded) {
+    console.log(forwarded)
+    return forwarded.split(",")[0].trim();
+  }
+  return headersList.get("x-real-ip") || null;
 };
