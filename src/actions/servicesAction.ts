@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
-import { Place } from "@/generated/prisma/browser";
 import { ok, fail, ApiResponse } from "@/lib/api-response";
+import { computeScore } from "@/lib/score-clamp";
 import prisma from "@/utils/db";
 import { addServiceSchema, AddServiceSchema } from "@/utils/schema";
 import { Service, ServiceById } from "@/utils/types";
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
 
 //! Add service action for server-side processing
 export const addServiceAction = async (
@@ -106,13 +105,52 @@ export const getServiceByIdAction = async (
   }
 };
 
-//! Get Clinet IP
-export const confirmServiceAction = async () => {
-  const headersList = await headers();
-  const forwarded = headersList.get("x-forwarded-for");
-  if (forwarded) {
-    console.log(forwarded)
-    return forwarded.split(",")[0].trim();
+export const confirmServiceAction = async (
+  placeId: string,
+  sanadId: string
+): Promise<ApiResponse<null>> => {
+  try {
+    await prisma.$transaction(async (tx) => {
+      try {
+        await tx.confirmation.create({
+          data: { placeId, sanadId },
+        });
+      } catch (e: any) {
+        if (e?.code === "P2002") {
+          throw new Error("DUPLICATE_CONFIRMATION");
+        }
+        throw e;
+      }
+
+      const updatedPlace = await tx.place.update({
+        where: { id: placeId },
+        data: {
+          confirmCountCached: { increment: 1 },
+        },
+        select: {
+          confirmCountCached: true,
+          reportCountCached: true,
+          phone: true,
+          description: true,
+          area: true,
+          updatedAt: true,
+        },
+      });
+      const newScore = computeScore(updatedPlace);
+      await tx.place.update({
+        where: { id: placeId },
+        data: { scoreCached: newScore },
+      });
+    });
+    revalidatePath(`/services-details/${placeId}`);
+    return ok(null, "تم تأكيد الخدمة بنجاح!");
+  } catch (error: any) {
+    if (error?.message === "DUPLICATE_CONFIRMATION") {
+      return fail("لقد قمت بتأكيد هذه الخدمة من قبل");
+    }
+    console.error("Error in confirmServiceAction:", error);
+    return fail(
+      error.message || "حدث خطأ أثناء تأكيد الخدمة، يرجى المحاولة لاحقاً"
+    );
   }
-  return headersList.get("x-real-ip") || null;
 };

@@ -1,13 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Edit2, Heart, Share2 } from "lucide-react";
 import { notify } from "@/utils/notify";
 import { useFingerprint } from "@/components/FingerprintProvider";
+import { confirmServiceAction } from "@/actions/servicesAction";
 interface IActionButtons {
+  placeId: string;
   title: string;
   description: string;
 }
-const ActionButtons = ({ title, description }: IActionButtons) => {
+const ActionButtons = ({ title, description, placeId }: IActionButtons) => {
   const sanadId = useFingerprint();
   // 29bb0ac8a66cb074bc09dd0297539901
   const handleShare = async () => {
@@ -38,14 +41,35 @@ const ActionButtons = ({ title, description }: IActionButtons) => {
       descriptionClassName: "text-[#ef4444]!",
     });
   };
-  const handleConfirm = () => {
-    notify("شكراً لتأكيدك! 🤍", "success", {
-      description: "مساهمتك تساعد مجتمعنا على البقاء دقيقاً",
-      style: {
-        fontSize: "15px",
-      },
-      descriptionClassName: "text-[#16a34a]!",
-    });
+  const handleConfirm = async () => {
+    try {
+      const result = await confirmServiceAction(placeId, sanadId as string);
+      if (result.success) {
+        notify("تم تأكيد الخدمة", "success", {
+          description: "شكراً لك!",
+          style: {
+            fontSize: "15px",
+          },
+          descriptionClassName: "text-[#16a34a]!",
+        });
+      }else {
+        notify("حدث خطأ أثناء تأكيد الخدمة", "error", {
+          description: result.message || "يرجى المحاولة مرة أخرى",
+          style: {
+            fontSize: "15px",
+          },
+          descriptionClassName: "text-[#ef4444]!",
+        });
+      }
+    } catch (error: any) {
+      notify("حدث خطأ أثناء تأكيد الخدمة", "error", {
+        description: error.message || "يرجى المحاولة مرة أخرى",
+        style: {
+          fontSize: "15px",
+        },
+        descriptionClassName: "text-[#ef4444]!",
+      });
+    }
   };
   return (
     <div className="p-4 md:p-8 animate-fade-up">
@@ -96,6 +120,8 @@ const ActionButtons = ({ title, description }: IActionButtons) => {
         </Button>
       </div>
       sanadID : {sanadId}
+      <br />
+      sanadIDPC : c4080fb67e39a09d15633747365c2664
     </div>
   );
 };

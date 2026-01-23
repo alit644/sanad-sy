@@ -1,4 +1,4 @@
-import { confirmServiceAction, getServiceByIdAction } from "@/actions/servicesAction";
+import { getServiceByIdAction } from "@/actions/servicesAction";
 import ActionButtons from "@/components/features/services/ActionButtons";
 import ServiceHeader from "@/components/features/services/ServiceHeader";
 import TrustScore from "@/components/features/services/TrustScore";
@@ -24,8 +24,6 @@ export async function generateMetadata({
 
 const Page = async ({ params }: PageProps) => {
   const { id } = await params;
-  const ip = await confirmServiceAction();
-  console.log(ip)
   const result = await getServiceByIdAction(id);
   if (!result.success) return <ErrorState message={result.message} />;
   return (
@@ -50,6 +48,7 @@ const Page = async ({ params }: PageProps) => {
             <ActionButtons
               title={result.data.title}
               description={result.data.description}
+              placeId={result.data.id}
             />
           </Card>
           {/* TODO: اضافة اخر تحديثات + خريطة الموقع */}
