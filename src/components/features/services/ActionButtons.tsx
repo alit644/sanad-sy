@@ -5,14 +5,18 @@ import { AlertTriangle, Edit2, Heart, Share2 } from "lucide-react";
 import { notify } from "@/utils/notify";
 import { useFingerprint } from "@/components/FingerprintProvider";
 import { confirmServiceAction } from "@/actions/servicesAction";
+import { useState, useTransition } from "react";
+import { ReportDialog } from "@/components/ReportDialog";
 interface IActionButtons {
   placeId: string;
   title: string;
   description: string;
 }
 const ActionButtons = ({ title, description, placeId }: IActionButtons) => {
+  const [isPending, startTransition] = useTransition();
+  const [reportOpen, setReportOpen] = useState<boolean>(false);
+
   const sanadId = useFingerprint();
-  // 29bb0ac8a66cb074bc09dd0297539901
   const handleShare = async () => {
     try {
       await navigator.share({
@@ -31,36 +35,32 @@ const ActionButtons = ({ title, description, placeId }: IActionButtons) => {
       });
     }
   };
-
   const handleReport = () => {
-    notify("تم استلام البلاغ", "error", {
-      description: "سنراجع المعلومات في أقرب وقت",
-      style: {
-        fontSize: "15px",
-      },
-      descriptionClassName: "text-[#ef4444]!",
-    });
+    setReportOpen(true);
+    
   };
   const handleConfirm = async () => {
     try {
-      const result = await confirmServiceAction(placeId, sanadId as string);
-      if (result.success) {
-        notify("تم تأكيد الخدمة", "success", {
-          description: "شكراً لك!",
-          style: {
-            fontSize: "15px",
-          },
-          descriptionClassName: "text-[#16a34a]!",
-        });
-      }else {
-        notify("حدث خطأ أثناء تأكيد الخدمة", "error", {
-          description: result.message || "يرجى المحاولة مرة أخرى",
-          style: {
-            fontSize: "15px",
-          },
-          descriptionClassName: "text-[#ef4444]!",
-        });
-      }
+      startTransition(async () => {
+        const result = await confirmServiceAction(placeId, sanadId as string);
+        if (result.success) {
+          notify("تم تأكيد الخدمة", "success", {
+            description: "شكراً لك!",
+            style: {
+              fontSize: "15px",
+            },
+            descriptionClassName: "text-[#16a34a]!",
+          });
+        } else {
+          notify("حدث خطأ أثناء تأكيد الخدمة", "error", {
+            description: result.message || "يرجى المحاولة مرة أخرى",
+            style: {
+              fontSize: "15px",
+            },
+            descriptionClassName: "text-[#ef4444]!",
+          });
+        }
+      });
     } catch (error: any) {
       notify("حدث خطأ أثناء تأكيد الخدمة", "error", {
         description: error.message || "يرجى المحاولة مرة أخرى",
@@ -83,7 +83,9 @@ const ActionButtons = ({ title, description, placeId }: IActionButtons) => {
           onClick={handleConfirm}
         >
           <Heart className="w-5 h-5" />
-          <span className="text-sm">تأكيد المعلومات</span>
+          <span className="text-sm">
+            {isPending ? "جاري التأكيد..." : "تأكيد المعلومات"}
+          </span>
         </Button>
 
         <Button
@@ -118,6 +120,13 @@ const ActionButtons = ({ title, description, placeId }: IActionButtons) => {
           <AlertTriangle className="w-5 h-5" />
           <span className="text-sm">إبلاغ عن خطأ</span>
         </Button>
+        <ReportDialog
+          open={reportOpen}
+          onOpenChange={setReportOpen}
+          placeTitle={title}
+          sanadId={sanadId as string}
+          placeId={placeId}
+        />
       </div>
       sanadID : {sanadId}
       <br />

@@ -38,3 +38,8 @@ export const addServiceSchema = z.object({
 });
 
 export type AddServiceSchema = z.infer<typeof addServiceSchema>;
+
+export const reportServiceSchema = z.object({
+  report: z.string({ error: "يجب تحديد سبب الإبلاغ" }).min(1, "يجب تحديد سبب الإبلاغ"),
+});
+export type ReportServiceSchema = z.infer<typeof reportServiceSchema>;

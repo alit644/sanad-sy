@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
+import { ReportReason } from "@/generated/prisma/enums";
 import { ok, fail, ApiResponse } from "@/lib/api-response";
 import { computeScore } from "@/lib/score-clamp";
 import prisma from "@/utils/db";
@@ -9,7 +10,7 @@ import { revalidatePath } from "next/cache";
 
 //! Add service action for server-side processing
 export const addServiceAction = async (
-  data: AddServiceSchema
+  data: AddServiceSchema,
 ): Promise<ApiResponse<null>> => {
   try {
     const validated = addServiceSchema.safeParse(data);
@@ -18,7 +19,7 @@ export const addServiceAction = async (
         success: false,
         message:
           JSON.stringify(
-            validated.error.issues.map((issue: any) => issue.message)
+            validated.error.issues.map((issue: any) => issue.message),
           ) || "البيانات المدخلة غير صحيحة",
       };
     }
@@ -38,7 +39,7 @@ export const addServiceAction = async (
   } catch (error: any) {
     console.error("Error in addServiceAction:", error);
     return fail(
-      error.message || "حدث خطأ أثناء إضافة الخدمة، يرجى المحاولة لاحقاً"
+      error.message || "حدث خطأ أثناء إضافة الخدمة، يرجى المحاولة لاحقاً",
     );
   }
 };
@@ -73,7 +74,7 @@ export const getAllServicesAction = async (): Promise<
 };
 // ! Get service by id action for server-side processing
 export const getServiceByIdAction = async (
-  id: string
+  id: string,
 ): Promise<ApiResponse<ServiceById>> => {
   try {
     const service = await prisma.place.findUnique({
@@ -105,9 +106,10 @@ export const getServiceByIdAction = async (
   }
 };
 
+//! Confirm service action for server-side processing
 export const confirmServiceAction = async (
   placeId: string,
-  sanadId: string
+  sanadId: string,
 ): Promise<ApiResponse<null>> => {
   try {
     await prisma.$transaction(async (tx) => {
@@ -150,7 +152,59 @@ export const confirmServiceAction = async (
     }
     console.error("Error in confirmServiceAction:", error);
     return fail(
-      error.message || "حدث خطأ أثناء تأكيد الخدمة، يرجى المحاولة لاحقاً"
+      error.message || "حدث خطأ أثناء تأكيد الخدمة، يرجى المحاولة لاحقاً",
+    );
+  }
+};
+
+//! Report service action for server-side processing
+export const reportServiceAction = async (
+  placeId: string,
+  sanadId: string,
+  reason: ReportReason
+): Promise<ApiResponse<null>> => {
+  try {
+    await prisma.$transaction(async (tx) => {
+      try {
+        await tx.report.create({
+          data: { placeId, sanadId, reason },
+        });
+      } catch (e: any) {
+        if (e?.code === "P2002") {
+          throw new Error("DUPLICATE_REPORT");
+        }
+        throw e;
+      }
+
+      const updatedPlace = await tx.place.update({
+        where: { id: placeId },
+        data: {
+          reportCountCached: { increment: 1 },
+        },
+        select: {
+          confirmCountCached: true,
+          reportCountCached: true,
+          phone: true,
+          description: true,
+          area: true,
+          updatedAt: true,
+        },
+      });
+      const newScore = computeScore(updatedPlace);
+      await tx.place.update({
+        where: { id: placeId },
+        data: { scoreCached: newScore },
+      });
+    });
+    revalidatePath(`/services-details/${placeId}`);
+    return ok(null, "تم إبلاغ عن الخدمة بنجاح!");
+  } catch (error: any) {
+    if (error?.message === "DUPLICATE_REPORT") {
+      return fail("لقد قمت بلإبلاغ عن هذه الخدمة من قبل");
+    }
+    console.error("Error in confirmServiceAction:", error);
+    return fail(
+      error.message || "حدث خطأ أثناء تأكيد الخدمة، يرجى المحاولة لاحقاً",
     );
   }
 };
