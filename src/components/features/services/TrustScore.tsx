@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Badge } from "@/components/ui/badge";
+import { getTrustBadge } from "@/lib/place.config";
 import { ShieldCheck, TrendingUp } from "lucide-react";
 interface ITrustScore {
   confirmCountCached:number,
   trustScore:number,
 }
 const TrustScore = ({ confirmCountCached,trustScore }: ITrustScore) => {
+  const trust = getTrustBadge(trustScore);
+
   return (
     <div className="p-4 md:p-8 animate-fade-up">
       <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
@@ -16,7 +20,9 @@ const TrustScore = ({ confirmCountCached,trustScore }: ITrustScore) => {
         <div className="relative">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-muted-foreground">مستوى الثقة</span>
-            <Badge variant={"verified"}>موثوق جداً</Badge>
+            <Badge variant={trust.variant as any}>
+              {trust.label}
+            </Badge>
           </div>
           <div className="h-3 bg-muted rounded-full overflow-hidden">
             <div

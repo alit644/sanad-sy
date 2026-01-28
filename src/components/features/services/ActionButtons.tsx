@@ -81,6 +81,7 @@ const ActionButtons = ({ title, description, placeId }: IActionButtons) => {
           aria-label="تأكيد المعلومات"
           className="flex-col h-auto py-4 gap-2"
           onClick={handleConfirm}
+          disabled={isPending}
         >
           <Heart className="w-5 h-5" />
           <span className="text-sm">
@@ -128,9 +129,7 @@ const ActionButtons = ({ title, description, placeId }: IActionButtons) => {
           placeId={placeId}
         />
       </div>
-      sanadID : {sanadId}
       <br />
-      sanadIDPC : c4080fb67e39a09d15633747365c2664
     </div>
   );
 };

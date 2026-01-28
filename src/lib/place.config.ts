@@ -62,3 +62,14 @@ export const getCityLabel = (cityValue: string) => {
   const city = syCities.find((c) => c.value === cityValue);
   return city ? city.label : cityValue;
 };
+
+// lib/trust.ts
+export function getTrustBadge(score: number) {
+  if (score >= 75) {
+    return { label: "موثوق جداً", variant: "verified" };
+  }
+  if (score >= 50) {
+    return { label: "موثوق", variant: "warning" };
+  }
+  return { label: "قيد التحقق", variant: "pending" };
+}
