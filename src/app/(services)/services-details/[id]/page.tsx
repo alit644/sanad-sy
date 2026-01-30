@@ -1,10 +1,11 @@
-import { getServiceByIdAction } from "@/actions/servicesAction";
+
 import ActionButtons from "@/components/features/services/ActionButtons";
 import ServiceHeader from "@/components/features/services/ServiceHeader";
 import TrustScore from "@/components/features/services/TrustScore";
 import BacktoExplore from "@/components/shared/BacktoExplore";
 import ErrorState from "@/components/shared/ErrorState";
 import { Card } from "@/components/ui/card";
+import { getServiceByIdCached } from "@/lib/api-call";
 import { Metadata } from "next";
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -14,7 +15,7 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
 
   const { id } = await params;
-  const result = await getServiceByIdAction(id);
+  const result = await getServiceByIdCached(id);
   if (!result.success) return { title: "Service Not Found" };
   return {
     title: result.data.title,
@@ -24,7 +25,7 @@ export async function generateMetadata({
 
 const Page = async ({ params }: PageProps) => {
   const { id } = await params;
-  const result = await getServiceByIdAction(id);
+  const result = await getServiceByIdCached(id);
   if (!result.success) return <ErrorState message={result.message} />;
   return (
     <main className="container mx-auto px-4 py-8 md:py-12 max-w-4xl">

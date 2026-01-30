@@ -1,11 +1,12 @@
-import { getAllServicesAction } from "@/actions/servicesAction";
 import ServiceCard from "@/components/cards/ServiceCard";
 import EmptyState from "@/components/shared/EmptyState";
 import ErrorState from "@/components/shared/ErrorState";
 import MPagination from "@/components/shared/MPagination";
+import { getServicesCached } from "@/lib/api-call";
+import { IFilters } from "@/utils/types";
 
-const ServicesGrid = async () => {
-  const data = await getAllServicesAction();
+const ServicesGrid = async (filters: IFilters) => {
+  const data = await getServicesCached(filters);
 
   if (!data.success) return <ErrorState message={data.message} />;
 

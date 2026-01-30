@@ -46,3 +46,10 @@ export type ServiceById = Prisma.PlaceGetPayload<{
     scoreCached: true;
   };
 }>;
+
+export interface IFilters {
+  q?: string;
+  city?: string;
+  types?: string;
+  status?: string;
+}

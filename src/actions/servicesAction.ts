@@ -5,7 +5,6 @@ import { ok, fail, ApiResponse } from "@/lib/api-response";
 import { computeScore } from "@/lib/score-clamp";
 import prisma from "@/utils/db";
 import { addServiceSchema, AddServiceSchema } from "@/utils/schema";
-import { Service, ServiceById } from "@/utils/types";
 import { revalidatePath } from "next/cache";
 
 //! Add service action for server-side processing
@@ -41,68 +40,6 @@ export const addServiceAction = async (
     return fail(
       error.message || "حدث خطأ أثناء إضافة الخدمة، يرجى المحاولة لاحقاً",
     );
-  }
-};
-//! Get all services action for server-side processing
-export const getAllServicesAction = async (): Promise<
-  ApiResponse<Service[]>
-> => {
-  try {
-    const services = await prisma.place.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-      select: {
-        id: true,
-        title: true,
-        area: true,
-        addressText: true,
-        phone: true,
-        hours: true,
-        city: true,
-        status: true,
-        type: true,
-      },
-      take: 10,
-    });
-
-    return ok(services as Service[], "تم جلب جميع الخدمات بنجاح!");
-  } catch (error: any) {
-    console.error("Error in getAllServicesAction:", error);
-    return fail("حدث خطأ أثناء جلب جميع الخدمات، يرجى المحاولة لاحقاً");
-  }
-};
-// ! Get service by id action for server-side processing
-export const getServiceByIdAction = async (
-  id: string,
-): Promise<ApiResponse<ServiceById>> => {
-  try {
-    const service = await prisma.place.findUnique({
-      where: {
-        id,
-      },
-      select: {
-        id: true,
-        title: true,
-        area: true,
-        addressText: true,
-        phone: true,
-        hours: true,
-        city: true,
-        status: true,
-        type: true,
-        description: true,
-        confirmCountCached: true,
-        scoreCached: true,
-      },
-    });
-    if (!service) {
-      return fail("الخدمة غير موجودة!");
-    }
-    return ok(service as ServiceById, "تم جلب الخدمة بنجاح!");
-  } catch (error: any) {
-    console.error("Error in getServiceByIdAction:", error);
-    return fail("حدث خطأ أثناء جلب الخدمة، يرجى المحاولة لاحقاً");
   }
 };
 
@@ -161,7 +98,7 @@ export const confirmServiceAction = async (
 export const reportServiceAction = async (
   placeId: string,
   sanadId: string,
-  reason: ReportReason
+  reason: ReportReason,
 ): Promise<ApiResponse<null>> => {
   try {
     await prisma.$transaction(async (tx) => {
