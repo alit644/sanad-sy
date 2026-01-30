@@ -32,9 +32,12 @@ export default async function Home({
           <Suspense fallback={<div>جاري التحميل...</div>}>
             <FilterBar />
           </Suspense>
-          <div className="my-4">
-            <HighlightText text="مستشفى الفهد بدمشق" searchQuery="مستشفى " />
-          </div>
+          {filterV.q && (
+            <div className="my-4">
+              <HighlightText searchQuery={filterV.q} />
+            </div>
+          )}
+
           {/* Service cards will be rendered here */}
           <Suspense fallback={<ServicesSkeleton />}>
             <ServicesGrid {...filterV} />

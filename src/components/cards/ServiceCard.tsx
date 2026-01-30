@@ -1,9 +1,8 @@
-import { CheckCircle2, ChevronLeft, Clock, MapPin, Phone } from "lucide-react";
+import {  ChevronLeft, MapPin, Phone } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
-import { PlaceStatus } from "@/generated/prisma/enums";
 import { Service } from "@/utils/types";
 import {
   getCityLabel,

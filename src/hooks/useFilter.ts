@@ -37,9 +37,17 @@ export const useFilter = () => {
   );
 
   //! مسح جميع الفلاتر وإعادة التوجيه إلى الصفحة الرئيسية
-  const clearFilters = useCallback(() => {
-    router.push("/");
-  }, [router]);
+  const clearFilters = useCallback((options?: { keepQuery?: boolean }) => {
+   const params = new URLSearchParams();
+
+    if (options?.keepQuery) {
+      const q = searchParams.get("q");
+      if (q) params.set("q", q);
+    }
+
+    const queryString = params.toString();
+    router.push(queryString ? `/?${queryString}` : "/");
+}, [router, searchParams]);
 
   return {
     updateFilter,

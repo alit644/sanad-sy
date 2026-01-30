@@ -1,31 +1,17 @@
 type HighlightProps = {
-  text: string;           // النص الكامل
-  searchQuery: string;    // نص البحث  
+  searchQuery: string; // نص البحث
 };
 
-const Highlight = ({ text, searchQuery }: HighlightProps) => {
-  if (!searchQuery.trim()) {
-    return <span className="text-foreground ">{text}</span>;
-  }
-
-  const regex = new RegExp(`(${searchQuery})`, "gi");
-  const parts = text.split(regex);
-
+const Highlight = ({ searchQuery }: HighlightProps) => {
   return (
-    <span className="text-foreground">
-      {parts.map((part, index) =>
-        regex.test(part) ? (
-          <span
-            key={index}
-            className="relative font-semibold italic text-primary bg-primary/10 px-1 py-0.5 rounded-sm border border-primary/30 transition-all duration-200"
-          >
-            {part}
-          </span>
-        ) : (
-          <span key={index} className="bg-gray-100 px-1 py-0.5 rounded-sm ">{part}</span>
-        )
-      )}
-    </span>
+    <div className="flex items-center gap-2 p-4 bg-linear-to-r from-primary/5 to-primary/10 rounded-lg border border-primary/20 shadow-sm hover:shadow-md transition-all duration-300">
+      <span className="text-sm font-medium text-muted-foreground">
+        نتيجة البحث:
+      </span>
+      <span className="relative font-semibold text-primary bg-linear-to-r from-primary/20 to-primary/10 px-3 py-1 rounded-md border border-primary/30 transition-all duration-200 hover:from-primary/30 hover:to-primary/15 hover:border-primary/50">
+        {searchQuery}
+      </span>
+    </div>
   );
 };
 

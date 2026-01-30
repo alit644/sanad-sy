@@ -1,7 +1,7 @@
 import { Plus, Search } from "lucide-react";
-import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import ResetFiltersButton from "./ResetFiltersButton";
 
 const EmptyState = () => {
   return (
@@ -19,9 +19,10 @@ const EmptyState = () => {
       </p>
 
       <div className="flex flex-col sm:flex-row gap-3">
-        <Button variant="outline">مسح الفلاتر</Button>
+      
+        <ResetFiltersButton keepQuery={false} />
         <Button asChild aria-label=" إضافة خدمة جديدة">
-          <Link href={'/add-services'}>
+          <Link href={"/add-services"}>
             <Plus className="h-4 w-4 mr-2" />
             إضافة خدمة جديدة
           </Link>

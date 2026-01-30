@@ -4,14 +4,12 @@ import { MSelect } from "./shared/MSelect";
 import { placeTypeOptions, serviceStatusOptions } from "@/lib/constants";
 import { useFilter } from "@/hooks/useFilter";
 import { Button } from "./ui/button";
+import ResetFiltersButton from "./shared/ResetFiltersButton";
 
 const FilterBar = () => {
   const { searchParams, updateFilter, clearFilters } = useFilter();
   // Handle Reset Filters
-  const handleResetFilters = () => {
-    clearFilters();
-    
-  };
+
   return (
     <div className="flex gap-3 items-center justify-between border border-input p-4 rounded-md shadow-xs bg-white overflow-x-auto hide-scrollbar">
       <div className="flex items-center gap-3">
@@ -40,16 +38,7 @@ const FilterBar = () => {
         />
       </div>
       {/* Reset Filters Button */}
-      <Button
-        className="whitespace-nowrap"
-        title="مسح الفلاتر"
-        aria-label="مسح الفلاتر"
-        variant="outline"
-        size="default"
-        onClick={handleResetFilters}
-      >
-        مسح الفلاتر
-      </Button>
+      <ResetFiltersButton keepQuery={true} />
     </div>
   );
 };
