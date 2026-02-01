@@ -8,7 +8,6 @@ import { ApiResponse, fail, ok } from "./api-response";
 //lib/api-call.ts
 export const getServicesCached = cache(
   async (filters: IFilters): Promise<ApiResponse<Service[]>> => {
-    console.log("Call DB Prisma");
     try {
       const normalizedFilters = normalizeFilters(filters);
       const where: any = {
@@ -77,7 +76,6 @@ export const getServicesCached = cache(
 );
 export const getServiceByIdCached = cache(
   async (id: string): Promise<ApiResponse<ServiceById>> => {
-    console.log("🟡 Call DB Prisma for getServiceByIdActionCached");
     try {
       const service = await prisma.place.findUnique({
         where: {
