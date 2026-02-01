@@ -37,7 +37,7 @@ export const getPlaceTypeBadge = (type: PlaceType) =>
 //! Place status config
 export const PLACE_STATUS_CONFIG = {
   [PlaceStatus.VERIFIED]: {
-    label: "",
+    label: "موثوق",
     badge: "verified",
   },
   [PlaceStatus.PENDING]: {

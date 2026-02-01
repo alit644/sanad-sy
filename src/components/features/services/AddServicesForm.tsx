@@ -73,6 +73,7 @@ const AddServicesForm = () => {
               render={({ field, fieldState }) => (
                 <Input
                   {...field}
+                   data-testid="service-name"
                   type="text"
                   id="title"
                   disabled={form.formState.isSubmitting}
@@ -91,6 +92,7 @@ const AddServicesForm = () => {
                 render={({ field }) => (
                   <MSelect
                     name="city"
+                    data-testid="service-city"
                     value={field.value}
                     disabled={form.formState.isSubmitting}
                     onValueChange={field.onChange}
@@ -111,6 +113,7 @@ const AddServicesForm = () => {
                     id="district"
                     disabled={form.formState.isSubmitting}
                     aria-invalid={fieldState.invalid}
+                    data-testid="service-area"
                     placeholder="مثال: شارع بغداد، بناء 12"
                     autoComplete="address-level2"
                   />
@@ -125,6 +128,7 @@ const AddServicesForm = () => {
               render={({ field }) => (
                 <MSelect
                   name="category"
+                  data-testid="service-category"
                   value={field.value}
                   onValueChange={field.onChange}
                   disabled={form.formState.isSubmitting}
@@ -144,6 +148,7 @@ const AddServicesForm = () => {
                     {...field}
                     type="tel"
                     id="phone"
+                    data-testid="service-phone"
                     disabled={form.formState.isSubmitting}
                     aria-invalid={fieldState.invalid}
                     placeholder="09XXXXXXXX"
@@ -159,6 +164,7 @@ const AddServicesForm = () => {
                   <Input
                     {...field}
                     type="text"
+                    data-testid="service-hours"
                     id="hours"
                     disabled={form.formState.isSubmitting}
                     aria-invalid={fieldState.invalid}
@@ -177,6 +183,7 @@ const AddServicesForm = () => {
                 <Textarea
                   {...field}
                   id="description"
+                  data-testid="service-description"
                   placeholder="وصف مختصر للخدمة..."
                   rows={6}
                   disabled={form.formState.isSubmitting}
@@ -193,6 +200,7 @@ const AddServicesForm = () => {
             <Button
               disabled={form.formState.isSubmitting}
               type="submit"
+              data-testid="submit-service"
               size={"lg"}
               className="w-full group hover:scale-102"
               title=" إرسال الخدمة"

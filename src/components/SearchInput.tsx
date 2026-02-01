@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useFilter } from "@/hooks/useFilter";
 import { Button } from "./ui/button";
 const SearchInput = () => {
-  const { updateFilter, searchParams , clearFilters } = useFilter();
+  const { updateFilter, searchParams, clearFilters } = useFilter();
   const [inputValue, setInputValue] = useState<string>(
     searchParams.get("q") || "",
   );
@@ -20,8 +20,8 @@ const SearchInput = () => {
   }, []);
   // reset input value and query params when search is cleared
   const resetInput = () => {
-      setInputValue("");
-      clearFilters({ keepQuery: false });
+    setInputValue("");
+    clearFilters({ keepQuery: false });
   };
 
   const handleInputChange = useCallback(
@@ -46,6 +46,7 @@ const SearchInput = () => {
     <div className="animate-fade-up-delay-2 relative max-w-lg mx-auto">
       <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5text-muted-foreground" />
       <Input
+        data-testid="search-input"
         value={inputValue}
         onChange={handleInputChange}
         type="text"

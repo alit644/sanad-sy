@@ -3,11 +3,10 @@ import { syCities } from "@/data";
 import { MSelect } from "./shared/MSelect";
 import { placeTypeOptions, serviceStatusOptions } from "@/lib/constants";
 import { useFilter } from "@/hooks/useFilter";
-import { Button } from "./ui/button";
 import ResetFiltersButton from "./shared/ResetFiltersButton";
 
 const FilterBar = () => {
-  const { searchParams, updateFilter, clearFilters } = useFilter();
+  const { searchParams, updateFilter } = useFilter();
   // Handle Reset Filters
 
   return (
