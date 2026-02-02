@@ -45,9 +45,14 @@ export const PLACE_STATUS_CONFIG = {
     badge: "pending",
   },
   [PlaceStatus.ARCHIVED]: {
-    label: "مرفوض",
-    badge: "pending",
+    label: "أرشيف",
+    badge: "warning",
   },
+  [PlaceStatus.REJECTED]: {
+    label: "مرفوض",
+    badge: "destructive",
+  },
+
 } as const;
 
 export const getPlaceStatusLabel = (status: PlaceStatus) =>
