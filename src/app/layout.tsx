@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
 const cairo = Cairo({
@@ -41,10 +39,8 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body className={` ${cairo.variable} antialiased bg-background`}>
-        <Header />
         <main className="min-h-screen">{children}</main>
         <Toaster />
-        <Footer />
       </body>
     </html>
   );

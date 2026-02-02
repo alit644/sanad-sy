@@ -53,3 +53,14 @@ export interface IFilters {
   types?: string;
   status?: string;
 }
+
+export interface AdminSection {
+  title: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>; 
+  iconColor: string;
+  buttonText: string;
+  
+  buttonIcon: React.ComponentType<{ className?: string }>;
+  path: string; 
+}

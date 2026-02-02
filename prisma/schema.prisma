@@ -84,6 +84,7 @@ enum PlaceStatus {
   PENDING
   VERIFIED
   ARCHIVED
+  REJECTED
 }
 
 enum ReviewStatus {
