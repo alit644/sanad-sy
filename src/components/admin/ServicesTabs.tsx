@@ -1,13 +1,11 @@
 "use client";
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-const ServicesTabs = () => {
+const ServicesTabs = ({status}: {status:string}) => {
   const router = useRouter();
-  const params = useSearchParams();
 
-  const status = params.get("status") ?? "pending";
 
   return (
     <Tabs

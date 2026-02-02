@@ -8,7 +8,8 @@ import FilterBarAdmin from "@/components/admin/shared/FilterBarAdmin";
 import ServicesTable from "@/components/admin/ServicesTable";
 import MPagination from "@/components/shared/MPagination";
 
-export default function ServicesPage() {
+export default async function Page({searchParams}:  {searchParams: Promise<{ status?: string }>}) {
+  const status = (await searchParams).status || "";
   // بيانات وهمية للخدمات
   const services = [
     {
@@ -66,7 +67,7 @@ export default function ServicesPage() {
       </div>
       <Separator className="my-8" />
 
-      <ServicesTabs />
+      <ServicesTabs status={status}/>
       {/* شريط البحث والفلترة */}
       <div className="flex flex-col sm:flex-row gap-4 mb-8">
         <FilterBarAdmin />
